@@ -34,7 +34,7 @@ describe 'Recommendations' do
     end
   end
 
-  context 'with topMatches' do
+  context 'with top_matches' do
     before(:all) do
       @critics = {'p1' => {'value1' => 2.2, 'value2' => 4.8, 'value3' => 1.0, 'value5' => 6.7, 'value4' => 7.9},
                   'p2' => {'value1' => 5.6, 'value2' => 9.9, 'value3' => 3.6, 'value5' => 2.4, 'value4' => 5.6},
@@ -44,12 +44,12 @@ describe 'Recommendations' do
     end
 
     it 'should return the right numbers of items' do
-      Recommendations.topMatches(@critics, 'p1', n = 3).length.should == 3
+      Recommendations.top_matches(@critics, 'p1', n = 3).length.should == 3
     end
 
     it 'should match the top result for sim_distance' do
       person = 'p1'
-      result = Recommendations.topMatches(@critics, person, n = 3, algorithm = 'sim_distance')
+      result = Recommendations.top_matches(@critics, person, n = 3, algorithm = 'sim_distance')
       other  = result[0][1] # get best matched person
 
       Recommendations.sim_distance(@critics, person, other).should == result[0][0]
@@ -57,7 +57,7 @@ describe 'Recommendations' do
 
     it 'should match the top result for sim_pearson' do
       person = 'p1'
-      result = Recommendations.topMatches(@critics, person)
+      result = Recommendations.top_matches(@critics, person)
       other  = result[0][1] # get best matched person
 
       Recommendations.sim_pearson(@critics, person, other).should == result[0][0]
