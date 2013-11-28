@@ -35,32 +35,32 @@ describe 'Recommendations' do
   end
 
   context 'with top_matches' do
-    before(:all) do
-      @prefs = {'p1' => {'value1' => 2.2, 'value2' => 4.8, 'value3' => 1.0, 'value5' => 6.7, 'value4' => 7.9},
-                'p2' => {'value1' => 5.6, 'value2' => 9.9, 'value3' => 3.6, 'value5' => 2.4, 'value4' => 5.6},
-                'p3' => {'value1' => 7.9, 'value2' => 8.8, 'value3' => 7.9, 'value5' => 5.9, 'value4' => 1.9},
-                'p4' => {'value1' => 8.4, 'value2' => 7.9, 'value3' => 3.0, 'value5' => 9.9, 'value4' => 6.3},
-                'p5' => {'value1' => 2.1, 'value2' => 9.8, 'value3' => 5.8, 'value5' => 4.8, 'value4' => 4.7}}
+    let(:prefs) do
+      {'p1' => {'value1' => 2.2, 'value2' => 4.8, 'value3' => 1.0, 'value5' => 6.7, 'value4' => 7.9},
+       'p2' => {'value1' => 5.6, 'value2' => 9.9, 'value3' => 3.6, 'value5' => 2.4, 'value4' => 5.6},
+       'p3' => {'value1' => 7.9, 'value2' => 8.8, 'value3' => 7.9, 'value5' => 5.9, 'value4' => 1.9},
+       'p4' => {'value1' => 8.4, 'value2' => 7.9, 'value3' => 3.0, 'value5' => 9.9, 'value4' => 6.3},
+       'p5' => {'value1' => 2.1, 'value2' => 9.8, 'value3' => 5.8, 'value5' => 4.8, 'value4' => 4.7}}
     end
 
+    let(:person) { 'p1' }
+
     it 'should return the right numbers of items' do
-      Recommendations.top_matches(@prefs, 'p1', n = 3).length.should == 3
+      Recommendations.top_matches(prefs, 'p1', n = 3).length.should == 3
     end
 
     it 'should match the top result for sim_distance' do
-      person = 'p1'
-      result = Recommendations.top_matches(@prefs, person, n = 3, algorithm = 'sim_distance')
-      other  = result[0][1] # get best matched person
+      result = Recommendations.top_matches(prefs, person, n = 3, algorithm = 'sim_distance')
+      other  = result.keys.first # get best matched person
 
-      Recommendations.sim_distance(@prefs, person, other).should == result[0][0]
+      Recommendations.sim_distance(prefs, person, other).should == result.values.first
     end
 
     it 'should match the top result for sim_pearson' do
-      person = 'p1'
-      result = Recommendations.top_matches(@prefs, person)
-      other  = result[0][1] # get best matched person
+      result = Recommendations.top_matches(prefs, person)
+      other  = result.keys.first # get best matched person
 
-      Recommendations.sim_pearson(@prefs, person, other).should == result[0][0]
+      Recommendations.sim_pearson(prefs, person, other).should == result.values.first
     end
   end
 end
