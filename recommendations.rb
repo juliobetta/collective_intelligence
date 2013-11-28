@@ -53,11 +53,13 @@ class Recommendations
 
   # Returns the best matches for person from the prefs dictionary.
   # Number of results and similarity function are optional params.
-  def self.topMatches(prefs, person, n = 5, similarity = 'sim_pearson')
-    scores = prefs.keys.map{|other| [Recommendations.send(similarity, prefs, person, other), other] if other != person}.compact!
+  def self.topMatches(prefs, person, n = 5, algorithm = 'sim_pearson')
+    scores = prefs.keys.map do |other|
+      [Recommendations.send(algorithm, prefs, person, other), other] unless other == person
+    end
 
     # sort the list so the highest scores appear at the top
     # and return the first n items of the sorted results
-    return scores.sort!{|a,b| b[0] <=> a[0]}.slice(0, n)
+    return scores.compact!.sort!{|a,b| b[0] <=> a[0]}.slice(0, n)
   end
 end
