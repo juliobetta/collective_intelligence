@@ -1,1 +1,3 @@
-gem 'rake'
+group :deployment do
+  gem 'rake'
+end
