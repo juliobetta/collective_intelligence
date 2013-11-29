@@ -1,4 +1,4 @@
-require_relative '../recommendations.rb'
+require_relative '../lib/recommendations.rb'
 require_relative '../utils/dictionary.rb'
 
 require 'rspec'
